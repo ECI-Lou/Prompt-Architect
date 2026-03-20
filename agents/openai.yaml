@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prompt Architect"
+  short_description: "Create standardized translation prompt workflows"
+  default_prompt: "Use $prompt-architect to generate a domain-specific translation prompt for a new localization project."
