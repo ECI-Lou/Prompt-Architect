@@ -98,4 +98,3 @@ $CODEX_HOME/skills/prompt-architect
 - `README.md` is user-facing repository documentation.
 - `references/` contains reusable rule libraries.
 - `examples/` provides structural inspiration, not copy-paste templates.
-- JUNCTION TEST 2026-03-27
