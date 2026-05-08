@@ -1,7 +1,7 @@
 ---
 name: prompt-architect
 description: |
-  为翻译项目生成或规范化 LLM translation prompts（System Prompt / Style Prompt / User Prompt），并根据源文本、语言对、垂直领域和客户约束补充术语、格式与合规规则。Use when Codex needs to create a new translation prompt, adapt a prompt for pharma/medical devices/patent/game/legal/tech docs/finance content, infer localization rules from source text, or reuse historical prompt patterns without copying project-specific content.
+  为翻译项目生成、规范化或精简 LLM translation prompts（System Prompt / Style Prompt / User Prompt），并根据源文本、语言对、垂直领域和客户约束补充术语、格式与合规规则。Use when Codex needs to create a new translation prompt, adapt or compact a prompt for pharma/medical devices/patent/game/legal/tech docs/finance content, infer localization rules from source text, or reuse historical prompt patterns without copying project-specific content.
 ---
 
 # Prompt Architect
@@ -88,11 +88,27 @@ Output ONLY the translation. Do not include conversational fillers.
 
 如果任务明确要求拆分为 System Prompt 和 User Prompt，保持同一套约束，但按平台字段重组。
 
+### 5. 检查并简化提示词
+
+交付前默认执行一次 compaction pass，尤其是专利、医药、技术文档这类容易堆叠保护规则的 prompt。
+
+检查目标：
+- 删除同义反复。不要在 Role、Terminology、Formatting、Project-Specific 里反复写“不能增删”“保留编号/公式/表格”“保持一致”等同一类要求。
+- 合并相近约束。把通用忠实性放在 Role；术语一致性和锁词放在 Terminology；结构、数字、单位、标点和 protected strings 放在 Formatting；只把源文档特有的高风险点放在 Project-Specific。
+- 压缩长清单。术语表和锁定 token 只列高风险、高频或容易被误译的项；其余用类别性规则覆盖。不要把同一个 token 同时重复列在多个 section。
+- 消除潜在冲突。特别检查目标语本地化规则与 protected strings 原样保留规则是否冲突；需要时明确写成“只适用于 ordinary prose，不适用于 claims/tables/formulas/source-fixed strings”。
+- 保留必要硬约束。精简不能删掉 language pair、领域、输出格式、零幻觉/不增删、法律范围、术语一致性、数字单位、变量公式、标签/编号保护和目标语言关键排版规则。
+
+经验目标：
+- 单一语对的常规专利/技术 prompt 优先控制在约 40-70 行。只有源文档包含大量客户术语表、监管规则或多类型内容时才写得更长。
+- 精简后的 prompt 应该读起来像“高价值约束清单”，而不是把同一个忠实性要求换不同说法重复三四次。
+
 ## Hard Rules
 
 - 不要臆造术语表、监管机构、字符限制或客户风格指南。
 - 不要把 example 中的项目特有要求原样继承到新项目。
 - 不要只复述用户原话；补充该领域和目标语言的必要行业规则。
+- 不要把同一条硬约束分散重写在多个 section；如需跨 section 覆盖，使用一句清晰边界说明，而不是重复长清单。
 - 不要在最终结果外再加大段解释。除非信息仍不完整，否则直接输出提示词。
 - 不要超过 2 个澄清问题。
 
@@ -111,6 +127,7 @@ Output ONLY the translation. Do not include conversational fillers.
 - `LLMMT_Games_enUSruRU_WutheringWaves_v2.md`
 - `LS_JNJ_enUSzhCN.md`
 - `Patent_arSAenUS_final.md`
+- `Patent_enUSdeDE_LithiumBattery_compact.md`：紧凑型专利 prompt 样本，源自 `projects/rena/Rena_P2023080772TRS3_260508_enUSdeDE.md` 的精简流程；适合参考如何压缩重复的技术/专利保护规则。
 - `Patent_zhCNjaJP_Fullwidth.md`
 - `TotalWars2.md`
 - `TRA_wulong_v3.md`
@@ -124,6 +141,7 @@ Output ONLY the translation. Do not include conversational fillers.
 - 是否补充了目标语言排版规范。
 - 是否写明了变量、标签、数字和单位的处理方式。
 - 是否明确约束零幻觉和不增删信息。
+- 是否完成“检查并简化”：删除重复累述、合并相近约束、消除本地化规则与 protected strings 原样保留之间的潜在冲突。
 
 ## Example Use
 
@@ -138,4 +156,5 @@ Output ONLY the translation. Do not include conversational fillers.
 2. 读取 `references/domain_rules.md#game`。
 3. 读取 `references/formatting_standards.md` 中的 `zh-CN` 和通用规则。
 4. 如有必要，加载 1 个最相近的游戏 example。
-5. 输出可直接用于翻译模型的 Role prompt 和 Style prompt。
+5. 生成 Role prompt 和 Style prompt 初稿。
+6. 执行“检查并简化”，删除重复约束后输出可直接用于翻译模型的最终提示词。
