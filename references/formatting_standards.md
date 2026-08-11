@@ -6,144 +6,93 @@
 
 ## Chinese (Simplified) - zh-CN
 
-### General Principles
-- Use **standard Mainland Chinese (Simplified)** conventions
-- Prioritize clarity and regulatory compliance for pharma/medical/legal texts
-- Follow industry-specific standards when applicable (e.g., NMPA for pharma)
+### Scope and Precedence
 
----
+- Use standard Mainland Simplified Chinese.
+- These are safe locale defaults, not a customer style guide. An explicitly
+  selected and approved client format profile may override them.
+- Apply locale formatting only to ordinary translatable prose. Do not reshape
+  code, formulas, chemical notation, dataset fields, literal values,
+  identifiers, URLs, tags, compact statistical notation, or other
+  source-fixed content.
+- Meaning, numeric value, logical strictness, date granularity, and protected
+  source identity take precedence over visual normalization.
 
-### Punctuation (标点符号)
+### Punctuation and Brackets
 
-#### Basic Rules
-- **Use full-width punctuation in main text**: "，" "。" "！" "？" "；"
-- **Colon handling**:
-  * Normal prose/labels: Use full-width "："
-  * Compact token-like patterns (no surrounding spaces): Keep half-width ":"
-    - Examples: `1:1` (ratio), `12:00` (time), `pH:7.4`, `Na+:K+` (ions)
-- **Quotation marks**: Use Chinese-style "" or 「」; avoid English-style " "
-- **Ellipsis**: Use "……" (6 dots), not "..." (3 dots)
-- **Enumeration**: Use "、" for item separation (e.g., "苹果、香蕉、橙子")
+- Use full-width Chinese punctuation in ordinary Chinese prose: `，` `。` `；`
+  `：` `！` `？`.
+- Keep half-width punctuation when it is functional inside ratios, time,
+  scientific notation, code, identifiers, URLs, or protected literals, such
+  as `1:1` and `12:00`.
+- Use Chinese quotation marks and the Chinese ellipsis in ordinary prose when
+  the source format permits localization.
+- Full-width parentheses `（）` are a safe default for ordinary Chinese prose.
+  Preserve half-width parentheses and square brackets when they belong to
+  formulas, chemical/PK notation, code, citations, tags, identifiers, or
+  source-fixed layout.
+- Do not impose a universal nested-bracket pattern or bracket-external spacing
+  rule. Apply an exact pattern only from the active client profile.
 
-#### Parentheses & Brackets (Pharma/Medical specific)
-- **General text**: Use **full-width** "（）" with **no spaces** around them
-- **Nested parentheses**: Outer "（）", inner "[  ]" (half-width square brackets)
-- **Chemical expressions**: Keep half-width "()" where part of chemical/structural notation
-- **J&J special bracket spacing rule** (OUTSIDE spacing):
-  * Do NOT add spaces inside [ ]
-  * If [ ] is adjacent to Arabic digits or English letters, insert **one half-width space OUTSIDE**:
-    - `表1[附件ALR88KBS]` → `表1 [附件ALR88KBS]`
-    - `Appendix[ALR88KBS]` → `Appendix [ALR88KBS]`
-    - `]1` → `] 1`
-  * Keep content inside brackets unchanged
+### Spacing
 
----
+- In ordinary Chinese prose, avoid arbitrary spaces between Chinese text and
+  adjacent Latin letters or digits. Preserve a deliberate source or approved
+  client convention when it carries structure.
+- A number and an English measurement-unit token normally use one half-width
+  space in ordinary prose, such as `10 mg` and `5 mL`, unless the selected
+  client profile specifies otherwise.
+- Do not insert, remove, or normalize spaces inside source-fixed notation,
+  formulas, variables, tags, values, or compact data fields.
+- Do not use fixed tag-spacing substitutions as a generic language rule.
+  Preserve tag identity and semantic attachment; apply exact surrounding
+  spaces only when an approved profile requires them.
 
-### Spacing (空格规则 - "盘古之白")
+### Numbers, Units, and Scientific Notation
 
-#### General Spacing Rules
-- **Rule 2 (GENERAL)**: Remove spaces between Chinese↔English and Chinese↔Arabic digits by default
-- **Rule 4 (EXCEPTION - higher priority)**: Insert **one half-width space** between number and English unit:
-  * Examples: `100 mg`, `5 mL`, `2.0 mmol/L`
-  * Temperature: Convert `°C/°F` → `℃/℉` and **do not** add space: `37℃`, `98℉`
-  * Liter: Convert lowercase `l` to uppercase `L`: `ml`→`mL`, `l`→`L`
-  * Micro: Convert `u` or Greek `μ` to half-width `µ`: `ug`→`µg`
+- Preserve every number, decimal, significant digit, sign, unit, range,
+  comparator, and threshold in meaning and precision.
+- Preserve source thousands grouping in data, IDs, dates, batch/lot numbers,
+  references, tables, and ambiguous standalone values. Do not add separators
+  merely because a number has four or more digits.
+- Use a period as the decimal marker unless an approved target convention
+  explicitly requires another form.
+- Do not globally normalize `°C`/`℃`, `μ`/`µ`, `ug`/`µg`, `l`/`L`, unit-product
+  symbols, range connectors, or full-/half-width comparators. These exact
+  Unicode and notation choices belong to a scientific or client style
+  authority.
+- Do not create or remove subscript/superscript formatting unless the source
+  markup and output format safely support it and an approved convention
+  requires it.
+- In ordinary visible text, avoid beginning a sentence with a bare comparator
+  when a natural Chinese construction can preserve the same strictness. Do not
+  change `>` to `≥`, `<` to `≤`, or otherwise change boundary inclusion.
 
-#### Special Tag-Spacing Cleanup (Medical/Pharma)
-Remove spaces in these patterns:
-- `章节 <tag>` → `章节<tag>`
-- `附录 <tag>` → `附录<tag>`
-- `附件 <tag>` → `附件<tag>`
-- `图 <tag>` → `图<tag>`
-- `表 <tag>` → `表<tag>`
-- `<tag> 和 <tag>` → `<tag>和<tag>`
+### Date and Time
 
----
+- Preserve the same calendar date, time point, timezone if present, and source
+  granularity.
+- In ordinary prose without an approved fixed format, use a clear,
+  unambiguous Chinese date expression. Do not force one numeric date pattern
+  across tables, code, citations, or source-fixed fields.
+- Preserve the source distinction between a complete date, month-year, year,
+  study day, cycle, visit, and relative time window.
+- Translate or retain abbreviated time units according to document function
+  and the active client profile; do not impose one policy on prose, tables,
+  formulas, and derivation code alike.
 
-### Numbers & Units
+### Pharma/Medical Locale Guidance
 
-#### Number Format
-- **Thousands separator**: Use comma: `1,234,567`
-  * Consistency rule: If some 4+ digit numbers use separators and others don't, normalize to **with commas**
-  * Comma must remain half-width (never full-width "，")
-- **Decimal point**: Use period: `3.14`
-
-#### Unit Spacing (Critical for Pharma)
-- **Number + English unit**: Insert **one half-width space**: `10 mg`, `5 mL`
-- **Temperature symbols**: Convert `°C/°F` → `℃/℉` with **no space**: `37℃`
-- **Percentage**: No space: `50%` (not `50 %`)
-  * Percent range rule: `1%-99%` (put % on both ends)
-
-#### Subscript/Superscript (NO underscore - Pharma)
-Must use **real subscript/superscript formatting** (not `_`):
-- **PK parameters**:
-  * `AUC0-24h` → `AUC` with `0-24h` as subscript
-  * `AUClast` → `AUC` with `last` as subscript
-  * `Ctrough` → `C` with `trough` as subscript
-  * `Cmax` → `C` with `max` as subscript
-  * `tmax` → `t` with `max` as subscript
-  * `t1/2` → `t` with `1/2` as subscript
-- **Chemical formulas**: `H2O` → `H₂O`, `CO2` → `CO₂`
-- **Ions**: `Ca2+` → `Ca²⁺`, `SO42-` → `SO₄²⁻`
-
----
-
-### Math & Relational Symbols (Pharma/Medical)
-
-**Use specified full-width forms; no spaces around them**:
-- `≥`、`≤`、`＞`、`＜`、`±`、`－`
-
-**Sentence start constraint**: Do not begin a normal narrative sentence with an operator; rewrite:
-- Bad: `≥10 mg 的剂量`
-- Good: `剂量≥10 mg`
-
-**Ranges**: Use hyphen-minus `-` only (not `～`):
-- Example: `10-20 mg`
-
----
-
-### Date & Time
-
-- **Date format**: `YYYY年M月D日` without leading zeros (e.g., `2018年6月8日`)
-  * Technical docs may use: `YYYY-MM-DD`
-- **Time format**: 24-hour (e.g., `14:30`) or with 上午/下午 for general audience
-- **Time units in body text**: Translate into Chinese words if not in parentheses:
-  * `涂旋5分钟` (not `涂旋5 min`)
-  * If inside parentheses, follow source
-
----
-
-### Domain-Specific Rules (Pharma/Medical)
-
-#### Latin Phrases
-Remove italic formatting for Latin terms (output in plain text):
-- `in vitro`, `in vivo`, `ex vivo`, `in situ`, `in utero`, `in silico`
-- `a priori`, `a posteriori`, `post hoc`, `per se`, `de novo`, `ad hoc`
-
-#### Clinical Trial Phases
-Use Roman numerals: `I期`、`II期`、`IIb期` (not Arabic "1期")
-
-#### Count-Unit Normalization
-Use correct Chinese measure words:
-- Subjects: `例`
-- Adverse events: `起`
-- Studies: `项`
-- Study sites/labs: `家`
-- Samples: `份`
-- Animals: `只`
-
-#### Subject Count + Percentage Format
-Fixed pattern: `x例(xx%)受试者` (not `x例受试者(xx%)`)
-
-#### Subject Descriptor Order
-Use: `疾病程度 + 疾病名称 + 年龄段 + 受试者/患者`
-- Example: `中重度活动性克罗恩病成人患者`
-
-#### Acronym Plural Normalization
-Remove plural "s" from abbreviations:
-- `AEs` → `AE`
-- `SAEs` → `SAE`
-- Express plurality in Chinese wording: `多起AE`
+- Render clinical trial phase designations consistently with the source and
+  any approved official name; do not alter source-fixed study identifiers.
+- Choose Chinese classifiers and participant/patient word order from context.
+  Do not enforce one count-percentage pattern or one disease-description order
+  across clients.
+- Treat an acronym's plural suffix conservatively. It may be removed in
+  ordinary Chinese prose when it is purely grammatical, but never modify a
+  machine identifier, coded value, official name, or protected literal.
+- Preserve Latin or scientific expressions according to source emphasis and
+  the applicable publication/client style; do not globally strip formatting.
 
 ---
 
@@ -207,7 +156,12 @@ Remove plural "s" from abbreviations:
 - **Use American spelling**: "color" (not "colour"), "center" (not "centre")
 
 ### Date & Time
-- **Date format**: MM/DD/YYYY (e.g., "03/15/2024")
+- **Ordinary-prose date default**: Use the en-US month-day-year convention;
+  spell out the month when needed for clarity and unambiguous interpretation.
+- **Patent/legal/regulatory boundary**: Preserve the same calendar date and
+  use an unambiguous en-US expression when reformatting is appropriate (for
+  example, "March 15, 2024"). Do not force a numeric order unless an explicit
+  client or filing requirement controls it.
 - **Time format**: 12-hour with AM/PM (e.g., "2:30 PM")
 
 ---
@@ -222,7 +176,10 @@ Remove plural "s" from abbreviations:
 - **Use British spelling**: "colour", "centre", "organisation"
 
 ### Date & Time
-- **Date format**: DD/MM/YYYY (e.g., "15/03/2024")
+- **Ordinary-prose date default**: Use the en-GB day-month-year convention;
+  spell out the month when needed for clarity and unambiguous interpretation.
+- **Patent/legal/regulatory boundary**: Preserve the same calendar date and do
+  not impose a fixed numeric order without an explicit controlling convention.
 - **Time format**: 24-hour preferred in formal contexts
 
 ---
@@ -241,7 +198,10 @@ Remove plural "s" from abbreviations:
 - **Thousands separator**: Use period (e.g., "1.234.567")
 
 ### Date & Time
-- **Date format**: DD.MM.YYYY (e.g., "15.03.2024")
+- **Ordinary-prose date default**: Use the German day-month-year convention;
+  spell out the month when needed for clarity and unambiguous interpretation.
+- **Patent/legal/regulatory boundary**: Preserve the same calendar date and do
+  not impose a fixed numeric order without an explicit controlling convention.
 - **Time format**: 24-hour (e.g., "14:30 Uhr")
 
 ---
@@ -275,7 +235,10 @@ Remove plural "s" from abbreviations:
 - **Thousands separator**: Use period (e.g., "1.234.567")
 
 ### Date & Time
-- **Date format**: DD/MM/YYYY (e.g., "15/03/2024")
+- **Ordinary-prose date default**: Use the Spanish day-month-year convention;
+  prefer a written month in formal text when needed to avoid ambiguity.
+- **Patent/legal/regulatory boundary**: Preserve the same calendar date and do
+  not impose a fixed numeric order without an explicit controlling convention.
 - **Months/days**: Lowercase (e.g., "lunes, 15 de marzo")
 
 ---
@@ -316,7 +279,11 @@ Remove plural "s" from abbreviations:
 
 ### Date & Time
 
-- **Date format**: DD/MM/YYYY (e.g., `15/03/2024`)
+- **Ordinary-prose date default**: Use the Brazilian Portuguese
+  day-month-year convention; prefer a written month in formal text when needed
+  to avoid ambiguity.
+- **Patent/legal/regulatory boundary**: Preserve the same calendar date and do
+  not impose a fixed numeric order without an explicit controlling convention.
 - **Time format**: 24-hour common (e.g., `14h30`)
 
 ---
@@ -562,15 +529,29 @@ Before finalizing Russian text:
 
 ### Tag Protection (Universal)
 - **Preserve all markup tags verbatim**: `<b>`, `</b>`, `{variable}`, `[link]`, etc.
-- **Do NOT translate**: Tag names, attribute names, variable names, HTML entities
-- **Maintain positions**: Keep tags in the same relative position to surrounding text
+- **Do NOT translate**: Tag names, attribute names, and variable names.
+- Preserve tag pairing, nesting, and the semantic content enclosed by each
+  tag. If target-language syntax requires movement, move the complete tagged
+  span without splitting or orphaning the tag.
+- Distinguish source-fixed markup entities from visible prose encoded as an
+  entity. Preserve the encoding when it is operational; when the platform
+  exposes a visible comparator or symbol for translation, preserve the same
+  meaning and strictness rather than blindly leaving an entity as prose.
+- Compact appearance, uppercase, a `#` prefix, or `=` alone does not prove
+  that a string is code. Translate human-readable table and flow-chart labels;
+  preserve verified identifiers, variables, literals, and executable syntax.
 
 ### URL & Email Handling
 - **Do NOT translate**: URLs, email addresses, file paths (keep as-is)
 
 ### Measurement Units
 - **Keep source units** unless conversion is explicitly requested
-- **Always insert space** between number and unit (e.g., "10 mg", "25 °C")
+- In ordinary prose, apply the target locale's standard spacing between a
+  number and unit (e.g., "10 mg", "25 °C").
+- Do not insert, remove, or normalize spacing inside formulas, chemical
+  notation, tables, protected strings, machine-readable tokens, or other
+  source-fixed notation. Domain and approved client rules override the
+  ordinary-prose default.
 
 ---
 

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "selection_policy": "explicit_only",
+  "profiles": [
+    {
+      "id": "ls-jnj-enus-zhcn-unicode-v3",
+      "aliases": [
+        "jnj-enus-zhcn",
+        "jnj-enus-zhcn-unicode-v3"
+      ],
+      "client": "Johnson & Johnson",
+      "source_locale": "en-US",
+      "target_locale": "zh-CN",
+      "approval": "user-supplied-client-format-prompt",
+      "client_markers": [
+        "Johnson & Johnson",
+        "J&J"
+      ],
+      "required_any_patterns": [
+        "\\bfull[- ]width\\b.{0,100}\\b(?:comparators?|operators?)\\b.{0,100}\\b(?:ordinary|running|visible)\\b|\\b(?:ordinary|running|visible)\\b.{0,100}\\bfull[- ]width\\b.{0,100}\\b(?:comparators?|operators?)\\b",
+        "\\b(?:one|1)\\s+(?:ASCII|half[- ]width)\\s+space\\b.{0,100}\\boutside\\b.{0,80}\\bsquare bracket",
+        "\\b(?:Section|section)\\b.{0,80}\\b(?:章节|section reference)\\b"
+      ],
+      "exclusive_patterns": [
+        "\\bfull[- ]width\\b.{0,100}\\b(?:comparators?|operators?)\\b.{0,100}\\b(?:ordinary|running|visible)\\b|\\b(?:ordinary|running|visible)\\b.{0,100}\\bfull[- ]width\\b.{0,100}\\b(?:comparators?|operators?)\\b",
+        "\\bpercent range\\b.{0,100}\\bboth ends\\b.{0,60}%"
+      ],
+      "foreign_patterns": [
+        "\\bBayer\\b",
+        "\\bspaced short hyphen\\b",
+        "\\bunit[- ]product\\b.{0,100}\\b(?:middle dot|·)"
+      ]
+    },
+    {
+      "id": "ls-bayer-enus-zhcn-unicode-v3",
+      "aliases": [
+        "bayer-enus-zhcn",
+        "bayer-enus-zhcn-unicode-v3"
+      ],
+      "client": "Bayer",
+      "source_locale": "en-US",
+      "target_locale": "zh-CN",
+      "approval": "user-supplied-client-format-prompt",
+      "client_markers": [
+        "Bayer"
+      ],
+      "required_any_patterns": [
+        "\\bhalf[- ]width\\b.{0,100}\\b(?:comparators?|operators?)\\b.{0,100}\\b(?:ordinary|running|visible)\\b|\\b(?:ordinary|running|visible)\\b.{0,100}\\bhalf[- ]width\\b.{0,100}\\b(?:comparators?|operators?)\\b",
+        "\\bspaced short hyphen\\b",
+        "\\bslash\\b.{0,100}\\b(?:no|without)\\s+spaces?\\b",
+        "\\bunit[- ]product\\b.{0,100}\\b(?:middle dot|·)"
+      ],
+      "exclusive_patterns": [
+        "\\bhalf[- ]width\\b.{0,100}\\b(?:comparators?|operators?)\\b.{0,100}\\b(?:ordinary|running|visible)\\b|\\b(?:ordinary|running|visible)\\b.{0,100}\\bhalf[- ]width\\b.{0,100}\\b(?:comparators?|operators?)\\b",
+        "\\bspaced short hyphen\\b",
+        "\\bunit[- ]product\\b.{0,100}\\b(?:middle dot|·)"
+      ],
+      "foreign_patterns": [
+        "\\bJohnson\\s*&\\s*Johnson\\b",
+        "\\bJ&J\\b",
+        "\\b(?:Section|section)\\b.{0,80}\\b章节\\b"
+      ]
+    }
+  ]
+}

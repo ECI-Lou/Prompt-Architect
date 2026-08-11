@@ -6,96 +6,198 @@
 
 ## Pharma (医药/制药) {#pharma}
 
-### Core Principles
-- **Evidence-based translation**: Every claim must be traceable to source
-- **Zero hallucination**: Do NOT add, omit, or alter medical information
-- **Terminology consistency**: Use standardized medical terminology (ICD-10, MedDRA, SNOMED CT)
+### 1. Core Fidelity and Evidence
+- Keep every medical or scientific statement traceable to the source. Do not
+  add, omit, summarize, silently correct, or reinterpret information.
+- Preserve negation, modality, certainty, uncertainty, causal force,
+  association, temporality, severity, seriousness, expectedness, limitations,
+  exceptions, and population scope.
+- Preserve evidence grades or levels only when the source actually supplies
+  them. Do not invent an evidence hierarchy for a document type.
 
-### Regulatory Context
-- **Target authority**: Specify regulatory body (FDA, EMA, NMPA, PMDA)
-- **Document type sensitivity**:
-  - Clinical protocols: Maintain evidence levels (Level I-III)
-  - Package inserts: Follow regulatory template structure
-  - Informed consent: Prioritize patient comprehension over literal translation
+### 2. Document Function and Register
+- Infer the narrowest supported function: clinical protocol,
+  clinical-statistical/derivation, regulatory labeling, pharmacovigilance,
+  patient-facing, CMC/quality, nonclinical, or medical-scientific.
+- Use a register appropriate to that function. A patient-facing document
+  prioritizes comprehension without weakening meaning; a derivation
+  specification prioritizes logic and traceability.
+- Apply an authority-specific template or convention only when the user,
+  source, or trusted project metadata identifies that authority and task.
+  Otherwise preserve the source structure and do not invent FDA, EMA, NMPA,
+  PMDA, or other jurisdictional requirements.
 
-### Specific Rules
+### 3. Terminology and Controlled Vocabularies
+- Select terminology from the complete medical concept and its context, then
+  keep the same concept consistent. Do not let a short word mechanically
+  override a longer entity.
+- Use an approved or registered target-language drug name only when an
+  authoritative project asset supplies it. Do not invent a local registered
+  name from general knowledge.
+- Apply MedDRA, ICD, SNOMED CT, WHO Drug, INN, or another controlled system
+  only when the source or project identifies the applicable system, version,
+  level, and target-language authority.
+- For coded lists, preserve code-term pairing, hierarchy, item boundaries,
+  order, and item count. Do not freely paraphrase a PT, LLT, HLT, SOC, or other
+  controlled level, and do not force ordinary narrative AE text into a coded
+  level that the source does not claim.
+- Treat termbase word choice separately from semantic fidelity. An external
+  termbase cannot resolve endpoint logic, assessor attachment, time scope, or
+  complete-entity boundaries.
 
-#### 1. Medical Terminology
-- **Drug names**: 
-  - Generic names: Translate using WHO INN (International Nonproprietary Names)
-  - Brand names: Keep as-is unless local registration uses different name
-- **Adverse events**: Use MedDRA Preferred Terms (PTs) in target language
-- **Anatomy**: Use standardized anatomical terminology (e.g., Terminologia Anatomica)
+### 4. Complete Medical Entities
+- Keep together every applicable component of:
+  - drug, active moiety, salt/form, strength, dose, route, frequency, and
+    duration;
+  - disease, stage, grade, subtype, status, and biomarker;
+  - endpoint, definition, time origin, assessment time, analysis population,
+    event, and censoring rule;
+  - specimen, collection context, assay, analyte, method, and time point;
+  - safety event, severity, seriousness, expectedness, causality, and outcome.
+- Do not omit a qualifier, attach it to the wrong entity, or render the same
+  component twice.
 
-#### 2. Dosage & Units
-- **Maintain precision**: "10 mg" must remain "10 mg" (never round to "approximately 10 mg")
-- **Unit conversions**: Only if explicitly requested by client (rare in pharma)
-- **Frequency abbreviations**: 
-  - Latin: Keep as-is (e.g., "q.i.d.", "p.r.n.") or translate per local convention
-  - Example (zh-CN): "q.i.d." → "每日四次 (q.i.d.)"
+### 5. Clinical, Statistical, and Temporal Logic
+- Preserve N/n and denominator, estimates, p-values, confidence intervals,
+  precision, ranges, comparators, ratios, and inclusion/exclusion boundaries
+  without rounding or changing strictness.
+- Preserve `before`, `after`, `within`, `beyond`, `more than`, `at least`,
+  `on or before`, and `on or after` as distinct temporal relations.
+- Preserve the granularity of every date operand and any explicit imputation.
+  Do not silently invent a missing day or describe a year/month-year operand
+  as a complete date. If the source deliberately compares mixed
+  granularities, preserve that comparison traceably rather than repairing it.
+- For derivations, preserve candidate events/dates, filters, AND/OR grouping,
+  branch precedence, shared conditions, earliest/latest selection,
+  missingness, imputation, and event/censoring branches.
+- Keep censoring, truncation, event occurrence, missingness, and imputation as
+  distinct concepts. Their exact target wording may be governed by a
+  termbase, but their statistical functions must not be conflated.
+- If the source Boolean chain is damaged or ambiguous, translate
+  conservatively and traceably; do not silently choose a new AND/OR relation.
 
-#### 3. Safety Information
-- **Black box warnings**: Translate verbatim; do NOT soften language
-- **Contraindications**: Maintain strict logical structure (e.g., "if A and B, then C")
-- **Precautions**: Do NOT add qualifiers like "usually" or "generally" if not in source
+### 6. Roles, Assessors, and Evidence Sources
+- Preserve who receives, performs, evaluates, confirms, reports, adjudicates,
+  or reviews each procedure or result.
+- Distinguish the person performing a scan or test from an investigator,
+  central laboratory, adjudication committee, or independent review body that
+  assesses the result.
+- Keep modifiers attached to the correct event, subject, date, assessment, or
+  data source, especially in negative structures.
 
-#### 4. Statistical Data
-- **P-values, confidence intervals**: Keep numerical values exact (do NOT round)
-- **Sample sizes**: "N=123" must remain "N=123"
-- **Tables & figures**: Translate labels but verify numerical accuracy
+### 7. Data, Code, and Structured Content
+- Preserve verified dataset names, variables, functions, operators, case,
+  quotes, literal values, ASCII syntax, identifiers, and grouping exactly.
+- Translate human-readable table cells, flow-chart nodes, headings, and
+  pseudo-code prose while preserving their logical role. Uppercase, `#`, or
+  `=` alone does not prove that visible text is executable code.
+- Preserve tables, lists, item order, fragments, and cross-segment
+  continuations.
+- Preserve tag names, attributes, pairing, nesting, and the semantic span
+  enclosed by each tag; tagged content may move as a whole for target-language
+  syntax.
 
-#### 5. References & Citations
-- **Keep citation format**: (Author, Year) or [1] style should match source
-- **Journal names**: Use official abbreviated form (per Index Medicus)
+### 8. Dose, Safety, Statistics, and References
+- Preserve dose, route, frequency, duration, unit, value, precision, and
+  treatment condition. Convert units only when explicitly authorized.
+- Preserve the force, scope, conditions, and hierarchy of boxed or otherwise
+  mandated warnings, contraindications, precautions, and adverse-reaction
+  statements. Do not soften or strengthen them.
+- Keep citation markers, author/year relationships, identifiers, and journal
+  title form as in the source unless an approved reference-format instruction
+  requires normalization.
+- Do not use a human reference translation or a single evaluator preference
+  as authority for an exact medical term or style convention.
 
 ---
 
 ## Patent (专利) {#patent}
 
 ### Core Principles
-- **1:1 correspondence**: Every source term must have exactly one target term (no synonyms)
+- **Authority-aware terminology**: Use context-applicable approved target
+  wording only when it is actually supplied in the current model instructions.
+  Do not treat automatically extracted terms, historical prompts, or examples
+  as approved target terminology.
+- **Consistent identity mapping**: The same source concept or defined entity should retain the same target rendering and label, while contextually different concepts must not be collapsed merely because they share a word.
 - **Legal scope preservation**: Do NOT expand or narrow the scope of claims
 - **Formal register**: Maintain patent-specific formal language
+- **Traceability**: Do not add, omit, silently correct, summarize, or reinterpret source content.
 
 ### Document Structure
 - **Claims (权利要求书)**: Most critical section
   - Independent claims vs. dependent claims structure must be clear
   - "comprising" vs. "consisting of" distinction is legally significant
 - **Description (说明书)**: Must support claims
-- **Abstract**: Concise summary (typically <150 words)
+- **Abstract**: Translate the supplied abstract faithfully; do not summarize or
+  delete content to meet an assumed target-word limit.
 
 ### Specific Rules
 
 #### 1. Claim Language
-- **"comprising"**: Inclusive (includes listed elements + others)
-  - zh-CN: "包括" or "包含"
-  - ja-JP: "含む" or "備える"
-- **"consisting of"**: Exclusive (only listed elements)
-  - zh-CN: "由...组成"
-  - ja-JP: "からなる"
-- **"consisting essentially of"**: Limited flexibility
-  - zh-CN: "基本上由...组成"
+- Preserve an open-ended inclusion marker as inclusive of the listed elements
+  without excluding additional matter.
+- Preserve a closed-list marker as limited to the listed elements.
+- Preserve an essentially closed marker with its source-supported limited
+  flexibility.
+- Select the actual target-language patent formula from context, approved
+  terminology, and target convention; the effect descriptions above are not
+  source-to-target term locks.
+- Preserve open and closed list effects from context. Do not create a
+  construction that combines a closed-list formula with an open-ended
+  qualifier unless the source explicitly requires both.
+- Preserve the distinction between optional matter and alternative matter.
+- When coordinated alternatives share a following predicate, use, method,
+  condition, or limitation, keep every alternative within that shared legal
+  relationship.
+- Preserve claim dependencies and antecedent relationships; do not recast a
+  dependent claim as ownership or description "of" another claim.
 
 #### 2. Technical Terms
 - **Locked terms**:
   - "SEQ ID NO: X" → Do NOT translate
-  - Figure references: "Figure 1", "Fig. 2A" → Keep as-is (or follow target office convention)
+  - Figure references: preserve the referenced number and sublabel exactly;
+    render the introducer ("Figure", "Fig.", or its target-language equivalent)
+    according to the approved target convention rather than treating the
+    entire source phrase as a universal literal lock
   - Chemical formulas: H₂O, C₆H₁₂O₆ → Never translate
 - **Neologisms**: If inventor created a term, keep consistency throughout document
+- **Complete entity identity**: Preserve all qualifiers, stereochemistry, salt/solvate/hydrate state, polymorph or crystal-form status, and entity labels. Do not omit a semantic head or render it twice when composing a term.
+- **Terminology classes**: Keep approved target wording, protected literal
+  strings, source-derived consistency anchors, and illustrative examples
+  separate.
 
 #### 3. Cross-References
 - **Internal references**: "as described in paragraph [0023]"
-  - Ensure paragraph numbers are updated if formatting changes
+  - Preserve paragraph and claim reference numbers exactly unless the user
+    explicitly requests a controlled renumbering operation.
   - zh-CN: "如第[0023]段所述"
 
 #### 4. Measurements & Ranges
 - **Numerical ranges**: "1-10" or "1 to 10"
-  - Maintain exact phrasing (patent scope depends on this)
-  - Example: "at least 5" ≠ "5 or more" (legally different in some jurisdictions)
+  - Preserve values, comparators, endpoint inclusivity, range structure, and
+    precision; do not normalize them merely as stylistic synonyms.
+- **Dates**: Preserve the same calendar date. Unless an approved client or
+  filing convention requires a numeric pattern, use an unambiguous
+  target-language expression rather than mechanically imposing a locale
+  default.
+- **Unit spacing**: Apply target-language scientific spacing only in ordinary
+  prose. Do not alter source-fixed formulas, tables, chemical notation,
+  identifiers, or protected strings.
 
 #### 5. Drawing Descriptions
 - **Element numbering**: (10), (20), (30) → Keep as-is
 - **Consistency**: If "10" is "housing" in paragraph [0015], it must remain "housing" throughout
+
+#### 6. Experimental and Procedural Text
+- Preserve actor/object relationships, order of operations, direction of addition, qualifiers such as slowly/dropwise/portionwise, conditions, and results.
+- Do not replace a specific solution, mixture, phase, filtrate, or residue with a vague or different process subject.
+- Keep source fragments and cross-segment continuations functionally traceable; do not force every segment into a standalone sentence.
+
+#### 7. Preference Boundary
+- Treat wording alternatives, optional sentence splitting, caption phrasing, and non-material article or capitalization choices as preferences unless a client style guide makes them mandatory.
+- Do not turn a preferred human reference translation into a universal patent rule without independent support.
+- For source ambiguity or visible corruption, translate conservatively and
+  traceably without silent correction.
 
 ---
 

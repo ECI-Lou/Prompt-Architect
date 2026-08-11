@@ -1,36 +1,25 @@
 # Prompt Architect
 
-Prompt Architect is a domain-aware skill for turning raw translation requirements into standardized, production-ready LLM prompts with built-in terminology, formatting, and localization rules.
+Prompt Architect is a standalone Codex skill that turns source documents or localization requirements into production-ready LLM translation prompts. Its default deliverable is one Markdown artifact containing exactly one `### Role prompt` followed by one `### Style prompt`.
 
-## What It Does
+Repository: <https://github.com/ECI-Lou/Prompt-Architect>
 
-This skill helps Codex generate translation prompts that are:
+## Scope
 
-- Structured for real translation workflows, not one-off demos
-- Adapted to domain-specific requirements such as pharma, patent, legal, and game localization
-- Aware of target-language formatting conventions
-- Reusable across portals, vendors, and project types
+Prompt Architect supports:
 
-Instead of producing a vague "translate this well" instruction, Prompt Architect assembles a prompt package that can include role definition, style rules, terminology controls, formatting normalization, and project-specific constraints.
-
-## Core Capabilities
-
-- Generate new translation System Prompt / Style Prompt / User Prompt sets
-- Infer likely domain rules from source content
-- Apply language-pair formatting standards such as `zh-CN`, `ja-JP`, `ru-RU`, `pt-BR`, and more
-- Reuse historical prompt patterns without leaking project-specific content
-- Normalize prompt structure across different translation portals or LLM workflows
-
-## Supported Domains
-
-- Pharma
-- Medical Devices
-- Patent
-- Game
-- Legal
-- Tech Docs
+- Pharma and clinical-statistical content
+- Medical devices
+- Patents
+- Games and dialogue localization
+- Legal content
+- Technical documentation
 - Finance
-- General Business / Other
+- General business and other content
+
+The skill infers the domain and source risks, applies only the relevant domain and target-language rules, separates approved terminology from protected source literals and consistency anchors, and avoids inventing client or runtime capabilities.
+
+This repository contains the standalone skill only. A document-upload portal, API, browser editor, storage layer, and download workflow are explicitly out of scope and belong to a future application repository.
 
 ## Repository Structure
 
@@ -43,58 +32,119 @@ prompt-architect/
 ├── references/
 │   ├── template.md
 │   ├── domain_rules.md
-│   └── formatting_standards.md
-└── examples/
-    └── *.md
+│   ├── formatting_standards.md
+│   ├── patent_prompt_framework.md
+│   ├── pharma_prompt_framework.md
+│   ├── client_format_profile_framework.md
+│   └── client_format_profiles.json
+├── examples/
+│   └── *.md
+├── scripts/
+│   ├── validate_patent_prompt.py
+│   ├── validate_pharma_prompt.py
+│   ├── validate_skill_package.py
+│   └── package_skill.py
+├── tests/
+│   └── test_*.py
+├── evals/
+│   └── evals.json
+└── .github/workflows/
+    └── ci.yml
 ```
 
-## How It Works
+Local working material is intentionally outside the published skill:
 
-Prompt Architect follows a four-step workflow:
+- `projects/` contains real project files and local test runs.
+- `local/` contains private reference documents and legacy utilities.
+- `.codex/`, `.agents/`, `tmp/`, caches, dependencies, and generated packages are also ignored.
 
-1. Extract the minimum required information from the request or source text.
-2. Load only the relevant domain rules and target-language formatting standards.
-3. Optionally inspect one closely matched historical example.
-4. Generate a structured prompt that can be used directly in translation workflows.
+Do not force-add files from these locations.
 
-The skill is intentionally conservative about context loading. It favors one matching example over many, and it does not copy project-specific glossaries, world-building, or client terminology into new prompts unless the user explicitly provides them.
+## Resource Loading
 
-## Example Trigger Requests
+Every generation task uses:
 
-```text
-Use $prompt-architect to create a translation system prompt for an en-US to zh-CN clinical study document.
-```
+1. `SKILL.md`
+2. `references/template.md`
+3. The matching section of `references/domain_rules.md`
+4. The general and target-locale sections of `references/formatting_standards.md`
 
-```text
-Use $prompt-architect to turn this patent translation brief into a reusable style prompt for ar-SA to en-US work.
-```
+Patent tasks additionally use `references/patent_prompt_framework.md` and the patent validator. Pharma tasks additionally use `references/pharma_prompt_framework.md` and the Pharma validator. Client format profiles are loaded only when the caller explicitly selects an exact registered profile that matches the language pair.
 
-```text
-Use $prompt-architect to standardize our game localization prompt across multiple vendors.
-```
-
-## Why This Skill Exists
-
-Most translation prompts fail in one of two ways:
-
-- They are too generic to enforce terminology, formatting, and compliance rules
-- They are too project-specific to reuse safely
-
-Prompt Architect sits in the middle. It keeps the prompt reusable, while still injecting the domain and language-pair rules that matter in production.
+Historical examples are optional structural references. Source-only generation does not load them by default, and examples never establish approved terminology for a new project.
 
 ## Installation
 
-Place this folder under your Codex skills directory so it can be discovered as `prompt-architect`.
-
-Typical location:
+Clone or copy the repository into a Codex skill directory:
 
 ```text
 $CODEX_HOME/skills/prompt-architect
 ```
 
-## Notes
+Alternatively, build the deterministic installable archive:
 
-- `SKILL.md` is optimized for model use.
-- `README.md` is user-facing repository documentation.
-- `references/` contains reusable rule libraries.
-- `examples/` provides structural inspiration, not copy-paste templates.
+```powershell
+python scripts/package_skill.py
+```
+
+The archive is written to `dist/prompt-architect.skill`. It contains only runtime skill resources; tests, evals, CI files, local projects, and private material are excluded.
+
+## Usage
+
+Example requests:
+
+```text
+Use $prompt-architect to generate an en-US to zh-CN translation prompt from this clinical-statistical DOCX.
+```
+
+```text
+Use $prompt-architect to create a compact zh-CN to en-US patent translation prompt from these source files.
+```
+
+```text
+Use $prompt-architect to standardize this game localization prompt while preserving placeholders and inline tags.
+```
+
+## Validation
+
+The validator scripts use only the Python standard library. Development tests require `pytest`.
+
+```powershell
+python -m pip install -r requirements-dev.txt
+python scripts/validate_skill_package.py
+pytest
+python scripts/package_skill.py
+python scripts/validate_skill_package.py dist/prompt-architect.skill --archive
+```
+
+Patent artifact lint:
+
+```powershell
+python scripts/validate_patent_prompt.py <prompt.md> --terminology-mode unknown
+```
+
+Pharma artifact lint:
+
+```powershell
+python scripts/validate_pharma_prompt.py <prompt.md> `
+  --source-locale <SOURCE_LOCALE> `
+  --target-locale <TARGET_LOCALE> `
+  --document-profile <PROFILE> `
+  --terminology-mode unknown `
+  --format-profile generic
+```
+
+Use model-visible terminology or a client profile only when the platform explicitly confirms that binding and supplies the exact token or profile ID.
+
+## Development and Data Safety
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository workflow and [SECURITY.md](SECURITY.md) for project-data handling rules.
+
+Before committing, verify that Git is not tracking local material:
+
+```powershell
+python scripts/validate_skill_package.py
+git status --short
+```
+
+The public package must contain reusable skill instructions, sanitized examples, deterministic validators, tests, and metadata only. Real source documents, customer deliverables, termbases, LQA workbooks, credentials, and generated analysis artifacts do not belong in this repository.

@@ -1,1 +1,42 @@
+# Local project data and private working material
 /projects/
+/local/
+/private/
+/scratch/
+/tmp/
+
+# Agent and analysis workspaces
+/.codex/
+/.agents/
+
+# Python caches and test artifacts
+__pycache__/
+*.py[cod]
+/.pytest_cache/
+/.coverage
+/htmlcov/
+
+# JavaScript dependencies and caches
+node_modules/
+.pnpm-store/
+
+# Generated packages and build output
+/dist/
+/build/
+/*.skill
+/*.zip
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+~$*
+
+# Editor and operating-system metadata
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo

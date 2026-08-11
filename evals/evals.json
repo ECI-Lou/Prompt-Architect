@@ -1,0 +1,89 @@
+{
+  "skill_name": "prompt-architect",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use Prompt Architect to create a reusable zh-CN to en-US translation prompt for pharmaceutical patent specifications involving multiple salts, solvates, crystalline and amorphous forms, XRPD/DSC/TGA data, preparation examples, and claims. The eventual translation platform accepts a two-column .xlsx termbase separately and displays a terminology-checking stage after pretranslation, but its model binding is unknown. Do not hard-code target-language polymorph names from the sample text.",
+      "expected_output": "One Markdown prompt containing exactly one Role prompt followed by one Style prompt. It must not emit a glossary placeholder, claim access to the external termbase, or mention glossary/termbase/binding/model-visibility metadata at all. It must preserve complete solid-form identity and labels, claims, data, and experimental relationships, while using source-derived project information only as risk context.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Generate an en-US to de-DE patent translation prompt for an electromechanical device patent with independent and dependent claims, reference signs, drawings, formulas, and test procedures. No customer glossary is available. The prompt must be reusable for other electromechanical patent families and must not invent German term pairs.",
+      "expected_output": "One Markdown prompt containing Role and Style blocks. It applies the patent authority hierarchy without a glossary, treats recurring terms as source concepts requiring consistent context-based rendering rather than approved target locks, preserves claim scope/reference signs/procedure relationships, and avoids importing pharmaceutical examples or unresolved placeholders.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Create an ar-SA to en-US biotech patent translation prompt for sequence listings, mutation notation, accession numbers, tagged inline text, assay procedures, tables, and claims. A two-column termbase is uploaded separately and checked by the platform after pretranslation; whether it is visible to the model is unknown. Some source segments are list continuations or sentence fragments.",
+      "expected_output": "One Markdown prompt with Role and Style blocks that contains no invented glossary variable, separates context-based terminology from protected literal identifiers, preserves sequences/tags and fragment function, maintains claim logic and experimental order, and does not force every segment into a standalone sentence.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Revise an existing patent translation prompt after LQA feedback. Major findings concern a predicate or use that no longer governs every coordinated alternative, a closed-list formula combined with an open-ended qualifier, optional matter changed into an alternative embodiment, loss or duplication of a salt/solvate crystal-form label, reversed actor/object or addition direction, omitted slowly/dropwise/portionwise qualifiers, and damaged numeric ranges. Minor findings concern unit spacing. Preferential findings concern give versus afford and optional sentence splitting. Produce a generalized revised prompt rather than copying the reference translation.",
+      "expected_output": "A revised Role-and-Style Markdown prompt that converts material and objective findings into portable hard rules covering shared legal relationships, open/closed scope, optional versus alternative matter, complete entity identity, procedure relationships and qualifiers, and numeric integrity. It routes unit spacing to formatting and keeps wording preferences out of hard constraints.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "In source-only automated mode, analyze the attached patent source.docx and generate a zh-CN to en-US translation prompt. The caller provides only the source file and language pair. Return the standard artifact that a future Prompt Architect portal can download.",
+      "expected_output": "A single Markdown artifact that starts with exactly one Role prompt and contains exactly one following Style prompt. The skill infers the patent field and source risks without asking for a deliverable, jurisdiction, glossary, runtime details, or customer rules; it invents none of them and leaves no template placeholder.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Generate a fresh zh-CN to en-US patent translation prompt from a new source file. A same-project historical prompt is present nearby but was not requested for reuse; it contains the target phrases 'A crystal form' and 'hydrochloride form I' plus exact statements about claims 1-21, Tables 1-18, and Figures 1-13.",
+      "expected_output": "A source-grounded Role-and-Style Markdown prompt that does not copy the stale target phrases or exact project counts. It may preserve general risk categories such as complete crystal-form identity, claims, tables, and figures, but every target-language fixed wording must have an approved or literal source provenance.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Create an en-US to fr-FR patent translation prompt. The user explicitly confirms that the translation platform binds the exact token {APPROVED_TERMS} into the model context. Use no other runtime variable.",
+      "expected_output": "A single Role-and-Style Markdown prompt that may reference only the explicitly confirmed {APPROVED_TERMS} token, does not invent a different glossary or protected-string variable, and retains the full patent coverage matrix.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "Generate a reusable zh-CN to en-US patent translation prompt for a source containing priority dates, bibliographic citations, ordinary-prose measurements, compact table data, chemical notation, and protected identifiers. No client or filing-office date convention is supplied. The source also contains dropwise and portionwise additions.",
+      "expected_output": "One Role-and-Style Markdown prompt that preserves the same calendar dates using clear, unambiguous en-US presentation without forcing MM/DD/YYYY; applies locale unit spacing only to ordinary prose; protects compact/source-fixed notation; explicitly preserves actor/object, addition direction and order, and slowly/dropwise/portionwise manner qualifiers; and contains no query or review workflow.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "Use Prompt Architect in source-only mode to generate an en-US to zh-CN Pharma translation prompt for a clinical-statistical endpoint derivation specification. The source contains partial dates, strict time windows, candidate date sets, shared AND/OR conditions, earliest/latest rules, event/censoring branches, Investigator and BICR assessments, dataset variables, functions, quoted coded values, tables, flow-chart labels, and inline tags. A two-column termbase is uploaded separately and checked after pretranslation, but model visibility is unknown.",
+      "expected_output": "One Role-and-Style Markdown prompt using the clinical-statistical profile. It contains no glossary/termbase/binding metadata or invented target terms; explicitly protects temporal granularity and strictness, candidate-set and extrema scope, assessor provenance, executable syntax including case and ASCII punctuation, human-readable labels, and equivalent tag semantic span; and outputs translation only.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "Generate an en-US to zh-CN Pharma prompt from a source-only file whose filename and body mention Johnson & Johnson. No client style guide or format profile was selected. A historical JNJ Unicode prompt is present in the same directory.",
+      "expected_output": "A generic Pharma-plus-zh-CN Role-and-Style prompt grounded only in the current source. It must not open or inherit the historical client prompt, must not activate JNJ-specific comparator, bracket, range, count, Section-reference, or Unicode rules, and must not mention that no profile was selected.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "Generate an en-US to zh-CN Pharma translation prompt for a clinical study document. The user explicitly supplies and approves one JNJ en-US to zh-CN Unicode/format prompt as the current client format profile. A Bayer format prompt is also nearby but was not selected. The external termbase is checked after translation.",
+      "expected_output": "One Role-and-Style artifact that compiles only applicable JNJ format rules into the Style block, removes conflicting generic values, excludes Bayer-only dash/slash/unit-product/time-unit rules and all profile-selection metadata, routes source-to-target terminology out of the format layer, and preserves source-fixed code/notation.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "Create a reusable en-US to zh-CN Pharma prompt for a MedDRA HLT/PT coded-list export with codes, hierarchy labels, long term lists, and ordinary narrative notes. No model-visible terminology asset is supplied; human reference translations are available but unapproved.",
+      "expected_output": "A Role-and-Style prompt that protects coding-system identity, code-term pairing, hierarchy, item count, order and boundaries, while not hard-coding human-reference Chinese PT/HLT wording or claiming access to a termbase. It distinguishes coded terms from ordinary narrative and remains translation-only.",
+      "files": []
+    },
+    {
+      "id": 13,
+      "prompt": "Generate an en-US to zh-CN prompt for an informed-consent and patient-instruction document. The source contains risks, probabilities, optional procedures, contact details, and comprehension-sensitive explanations, but no analysis datasets or endpoint derivation code.",
+      "expected_output": "A patient-facing Pharma Role-and-Style prompt that prioritizes comprehensible Simplified Chinese without weakening risk, consent, modality or optionality. It does not import clinical-statistical censoring, SAS, candidate-date, BICR or derivation-code modules and does not invent an NMPA/FDA template.",
+      "files": []
+    },
+    {
+      "id": 14,
+      "prompt": "Generate an en-US to zh-CN clinical-statistical Pharma prompt for a source that contains the suspicious endpoint code CPRC, lowercase variable aval, quoted value PET (NON-PSMA), index(...), length(...), and tagged ordinal fragments. The source may be inconsistent, but the task is translation only.",
+      "expected_output": "A compact Role-and-Style prompt that requires conservative traceability rather than silently changing CPRC to CRPC or aval to AVAL; preserves quoted values, case, operators and ASCII syntax exactly; reconstructs tagged target-language spans without orphaned English ordinal suffixes; and contains no query or source-error report.",
+      "files": []
+    }
+  ]
+}
